@@ -1,0 +1,104 @@
+﻿@model Query_mvc_Q5.ViewModels.ProductListViewModel
+
+@{
+    ViewBag.Title = "Query_mvc_Q5";
+}
+
+@using X.PagedList.Mvc;
+
+<div class="jumbotron">
+    <h1>Query</h1>
+    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    <hr class="my-4">
+    <form action="@Url.Action("Index", "Home")" method="get">
+        <div class="form-group">
+            <label for="slctLocale">Locale</label>
+            <select name="slctLocale" id="slctLocale" class="form-control">
+                <option selected>Choose...</option>
+                <option>...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="inputPrdtName">Product Name</label>
+            <input type="text" class="form-control" name="inputPrdtName" id="inputPrdtName" placeholder="PS4 500 Go F Black">
+        </div>
+        <div class="form-group">
+            <label for="inputPriceHr">Price higher than</label>
+            <input type="text" class="form-control" name="inputPriceHr" id="inputPriceHr" placeholder="500">
+        </div>
+        <button type="submit" class="btn btn-primary">Query</button>
+    </form>
+</div>
+
+<h2>List of Products</h2>
+<table class="table table-bordered table-striped">
+    @{var dummy = Model.ProductList.FirstOrDefault(); }
+    <tr>
+        <th>@Html.DisplayNameFor(model => dummy.Id)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Product_Name)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Locale)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Create_Date)</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.ProductList)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(m => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Product_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Locale)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Create_Date)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Detail", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager((X.PagedList.IPagedList)Model.ProductList,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+        ContainerDivClasses = new[] { "" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        MaximumPageNumbersToDisplay = 5
+    })
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            getLocale();
+        });
+
+        function getLocale() {
+            var dpmtUrl = '/Home/GetLocale';
+            $.ajax({
+                url: dpmtUrl,
+                type: 'post',
+                cache: false,
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.length > 0) {
+                        $('#slctLocale').empty();
+                        $('#slctLocale').append($('<option></option>').val('').text('please choose locale'));
+                        $.each(data, function (i, item) {
+                            $('#slctLocale').append($('<option></option>').val(item.Name).text(item.FullName));
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+}
