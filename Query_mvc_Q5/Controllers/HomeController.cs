@@ -19,13 +19,20 @@ namespace Query_mvc_Q5.Controllers
             ProductListViewModel productListViewModel = new ProductListViewModel();
             List<ProductViewModel> productList = GetProductsFromJsonFile();
 
-            var _productList = from p in productList
-                               where p.Locale == slctLocale &&
-                               p.Product_Name == inputPrdtName &&
-                               p.Price >= inputPriceHr
-                               select p;
+            if (!string.IsNullOrEmpty(slctLocale) || !string.IsNullOrEmpty(inputPrdtName) || inputPriceHr != null)
+            {
+                var _productList = from p in productList
+                                   where p.Locale == slctLocale &&
+                                   p.Product_Name == inputPrdtName &&
+                                   p.Price >= inputPriceHr
+                                   select p;
 
-            productListViewModel.ProductList = _productList;
+                productListViewModel.ProductList = _productList;
+            }
+            else
+            {
+                productListViewModel.ProductList = productList;
+            }
 
             var pageNumber = page ?? 1;
             productListViewModel.ProductList = productListViewModel.ProductList.ToPagedList(pageNumber, pageSize);
