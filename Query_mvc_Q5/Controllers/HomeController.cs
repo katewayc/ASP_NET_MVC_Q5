@@ -21,11 +21,17 @@ namespace Query_mvc_Q5.Controllers
 
             if (!string.IsNullOrEmpty(slctLocale) || !string.IsNullOrEmpty(inputPrdtName) || inputPriceHr != null)
             {
-                var _productList = from p in productList
-                                   where p.Locale == slctLocale &&
-                                   p.Product_Name == inputPrdtName &&
-                                   p.Price >= inputPriceHr
-                                   select p;
+                //var _productList = from p in productList
+                //                   where p.Locale == slctLocale &&
+                //                   p.Product_Name == inputPrdtName &&
+                //                   p.Price >= inputPriceHr
+                //                   select p;
+
+
+                var _productList = productList
+                    .Where(x => x.Locale == slctLocale)
+                    .Where(x => x.Product_Name == inputPrdtName)
+                    .Where(x => x.Price >= inputPriceHr);
 
                 productListViewModel.ProductList = _productList;
             }
@@ -33,6 +39,9 @@ namespace Query_mvc_Q5.Controllers
             {
                 productListViewModel.ProductList = productList;
             }
+
+
+
 
             var pageNumber = page ?? 1;
             productListViewModel.ProductList = productListViewModel.ProductList.ToPagedList(pageNumber, pageSize);
