@@ -19,25 +19,27 @@ namespace Query_mvc_Q5.Controllers
             ProductListViewModel productListViewModel = new ProductListViewModel();
             List<ProductViewModel> productList = GetProductsFromJsonFile();
 
-            if (!string.IsNullOrEmpty(slctLocale) || !string.IsNullOrEmpty(inputPrdtName) || inputPriceHr != null)
+            ViewBag.slctLocale = slctLocale;
+            ViewBag.inputPrdtName = inputPrdtName;
+            ViewBag.inputPriceHr = inputPriceHr;
+
+            var _productList = from p in productList
+                               select p;
+
+            if (!string.IsNullOrEmpty(slctLocale))
             {
-                ViewBag.slctLocale = slctLocale;
-                ViewBag.inputPrdtName = inputPrdtName;
-                ViewBag.inputPriceHr = inputPriceHr;
-
-                var _productList = productList
-                    .Where(p => p.Locale == slctLocale)
-                    .Where(p => p.Product_Name.ToLower().Contains(inputPrdtName.ToLower()))
-                    .Where(p => p.Price >= inputPriceHr);
-
-                productListViewModel.ProductList = _productList;
+                _productList = productList.Where(p => p.Locale == slctLocale);
             }
-            else
+            if (!string.IsNullOrEmpty(inputPrdtName))
             {
-                productListViewModel.ProductList = productList;
+                _productList = _productList.Where(p => p.Product_Name.ToLower().Contains(inputPrdtName.ToLower()));
+            }
+            if (inputPriceHr != null)
+            {
+                _productList = _productList.Where(p => p.Price >= inputPriceHr);
             }
 
-
+            productListViewModel.ProductList = _productList;
 
 
             var pageNumber = page ?? 1;
