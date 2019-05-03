@@ -13,8 +13,7 @@
     <form action="@Url.Action("Index", "Home")" method="get">
         <div class="form-group">
             <label for="slctLocale">Locale</label>
-            <select name="slctLocale" id="slctLocale" class="form-control">
-            </select>
+            <select name="slctLocale" id="slctLocale" class="form-control"></select>
         </div>
         <div class="form-group">
             <label for="inputPrdtName">Product Name</label>
@@ -23,6 +22,10 @@
         <div class="form-group">
             <label for="inputPriceHr">Price higher than</label>
             <input type="text" class="form-control" name="inputPriceHr" id="inputPriceHr" placeholder="please set a number" value="@(ViewBag.inputPriceHr ?? String.Empty)">
+        </div>
+        <div class="form-group">
+            <label for="inputPriceLr">Price lower than</label>
+            <input type="text" class="form-control" name="inputPriceLr" id="inputPriceLr" placeholder="please set a number" value="@(ViewBag.inputPriceLr ?? String.Empty)">
         </div>
         <button type="submit" class="btn btn-primary">Query</button>
     </form>
@@ -35,7 +38,7 @@
         <th>@Html.DisplayNameFor(model => dummy.Id)</th>
         <th>@Html.DisplayNameFor(model => dummy.Product_Name)</th>
         <th>@Html.DisplayNameFor(model => dummy.Locale)</th>
-        <th>@Html.DisplayNameFor(model => dummy.Create_Date)</th>
+        <th>@Html.DisplayNameFor(model => dummy.Price)</th>
         <th></th>
     </tr>
 
@@ -52,10 +55,10 @@
                 @Html.DisplayFor(m => item.Locale)
             </td>
             <td>
-                @Html.DisplayFor(m => item.Create_Date)
+                @Html.DisplayFor(m => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Details", "Detail", new { id = item.Id })
+                @Html.ActionLink("Detail", "Detail", new { id = item.Id })
             </td>
         </tr>
     }
