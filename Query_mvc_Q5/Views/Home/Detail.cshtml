@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+<span>Under Construstion</span>
+<br/>
+<a href="javascript:void(0);" onclick="history.go(-1);">Back to Previous Page</a>
+
+@section scripts{
+<script type="text/javascript">
+    $(document).on('click', '#backLink', function () {
+        history.go(-1);
+    });
+</script>
+    
+    }
+
