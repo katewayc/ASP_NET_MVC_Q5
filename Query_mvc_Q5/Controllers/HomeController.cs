@@ -21,9 +21,13 @@ namespace Query_mvc_Q5.Controllers
 
             if (!string.IsNullOrEmpty(slctLocale) || !string.IsNullOrEmpty(inputPrdtName) || inputPriceHr != null)
             {
+                ViewBag.slctLocale = slctLocale;
+                ViewBag.inputPrdtName = inputPrdtName;
+                ViewBag.inputPriceHr = inputPriceHr;
+
                 var _productList = productList
                     .Where(p => p.Locale == slctLocale)
-                    .Where(p => p.Product_Name.Contains(inputPrdtName))
+                    .Where(p => p.Product_Name.ToLower().Contains(inputPrdtName.ToLower()))
                     .Where(p => p.Price >= inputPriceHr);
 
                 productListViewModel.ProductList = _productList;
