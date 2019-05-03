@@ -14,7 +14,7 @@ namespace Query_mvc_Q5.Controllers
     public class HomeController : Controller
     {
         private int pageSize = 5;
-        public ActionResult Index(int? page, string slctLocale, string inputPrdtName, decimal? inputPriceHr)
+        public ActionResult Index(int? page, string slctLocale, string inputPrdtName, decimal? inputPriceHr, decimal? inputPriceLr)
         {
             ProductListViewModel productListViewModel = new ProductListViewModel();
             List<ProductViewModel> productList = GetProductsFromJsonFile();
@@ -22,6 +22,7 @@ namespace Query_mvc_Q5.Controllers
             ViewBag.slctLocale = slctLocale;
             ViewBag.inputPrdtName = inputPrdtName;
             ViewBag.inputPriceHr = inputPriceHr;
+            ViewBag.inputPriceLr = inputPriceLr;
 
             var _productList = from p in productList
                                select p;
@@ -37,6 +38,10 @@ namespace Query_mvc_Q5.Controllers
             if (inputPriceHr != null)
             {
                 _productList = _productList.Where(p => p.Price >= inputPriceHr);
+            }
+            if (inputPriceLr != null)
+            {
+                _productList = _productList.Where(p => p.Price <= inputPriceLr);
             }
 
             productListViewModel.ProductList = _productList;
@@ -71,6 +76,11 @@ namespace Query_mvc_Q5.Controllers
             }
 
             return productListViewModels;
+        }
+
+        public ActionResult Detail(int? Id)
+        {
+            return View();
         }
     }
 }
