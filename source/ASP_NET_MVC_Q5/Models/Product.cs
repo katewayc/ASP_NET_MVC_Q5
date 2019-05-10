@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Query_mvc_Q5.Models
+namespace ASP_NET_MVC_Q5.Models
 {
     public class Product
     {

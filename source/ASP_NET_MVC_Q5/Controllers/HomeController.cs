@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Query_mvc_Q5.Models;
-using Query_mvc_Q5.ViewModels;
+using ASP_NET_MVC_Q5.Models;
+using ASP_NET_MVC_Q5.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,49 +9,51 @@ using System.Web;
 using System.Web.Mvc;
 using X.PagedList;
 
-namespace Query_mvc_Q5.Controllers
+namespace ASP_NET_MVC_Q5.Controllers
 {
     public class HomeController : Controller
     {
         private int pageSize = 5;
-        public ActionResult Index(int? page, string slctLocale, string inputPrdtName, decimal? inputPriceHr, decimal? inputPriceLr)
-        {
-            ProductListViewModel productListViewModel = new ProductListViewModel();
-            List<ProductViewModel> productList = GetProductsFromJsonFile();
 
-            ViewBag.slctLocale = slctLocale;
-            ViewBag.inputPrdtName = inputPrdtName;
-            ViewBag.inputPriceHr = inputPriceHr;
-            ViewBag.inputPriceLr = inputPriceLr;
+        public ActionResult Index(int? page, ProductListViewModel model)
+        {
+            List<ProductViewModel> productList = GetProductsFromJsonFile();
 
             var _productList = from p in productList
                                select p;
 
-            if (!string.IsNullOrEmpty(slctLocale))
+            if (!string.IsNullOrEmpty(model.InputLocale))
             {
-                _productList = productList.Where(p => p.Locale == slctLocale);
+                _productList = _productList.Where(p => p.Locale == model.InputLocale);
             }
-            if (!string.IsNullOrEmpty(inputPrdtName))
+            if (!string.IsNullOrEmpty(model.InputProductName))
             {
-                _productList = _productList.Where(p => p.Product_Name.ToLower().Contains(inputPrdtName.ToLower()));
+                _productList = _productList.Where(p => p.Product_Name.ToLower().Contains(model.InputProductName.ToLower()));
             }
-            if (inputPriceHr != null)
+            if (!string.IsNullOrEmpty(model.InputPriceMax))
             {
-                _productList = _productList.Where(p => p.Price >= inputPriceHr);
+                _productList = _productList.Where(p => p.Price >= Convert.ToDecimal(model.InputPriceMax));
             }
-            if (inputPriceLr != null)
+            if (!string.IsNullOrEmpty(model.InputPriceMin))
             {
-                _productList = _productList.Where(p => p.Price <= inputPriceLr);
+                _productList = _productList.Where(p => p.Price <= Convert.ToDecimal(model.InputPriceMin));
             }
 
-            productListViewModel.ProductList = _productList;
+            model.ProductList = _productList;
 
 
             var pageNumber = page ?? 1;
-            productListViewModel.ProductList = productListViewModel.ProductList.ToPagedList(pageNumber, pageSize);
+            model.ProductList = model.ProductList.ToPagedList(pageNumber, pageSize);
 
-            return View(productListViewModel);
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Query(ProductListViewModel model)
+        {
+            return View(model);
+        }
+
 
         public JsonResult GetLocale()
         {

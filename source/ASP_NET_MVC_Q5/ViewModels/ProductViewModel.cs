@@ -4,10 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Query_mvc_Q5.ViewModels
+namespace ASP_NET_MVC_Q5.ViewModels
 {
     public class ProductListViewModel
     {
+        public string InputLocale { get; set; }
+        public string InputProductName { get; set; }
+        public string InputPriceMax { get; set; }
+        public string InputPriceMin { get; set; }
+
         public IEnumerable<ProductViewModel> ProductList { get; set; }
     }
 

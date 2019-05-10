@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace Query_mvc_Q5
+namespace ASP_NET_MVC_Q5
 {
     public class BundleConfig
     {

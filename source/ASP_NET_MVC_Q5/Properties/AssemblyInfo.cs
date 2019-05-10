@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 組件的一般資訊會透過將設定 
 // 控制。變更這些屬性值可修改與組件關聯的
 // 資訊。
-[assembly: AssemblyTitle("Query_mvc_Q5")]
+[assembly: AssemblyTitle("ASP_NET_MVC_Q5")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Query_mvc_Q5")]
+[assembly: AssemblyProduct("ASP_NET_MVC_Q5")]
 [assembly: AssemblyCopyright("Copyright (C)  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

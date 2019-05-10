@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Query_mvc_Q5
+namespace ASP_NET_MVC_Q5
 {
     public class RouteConfig
     {
@@ -15,8 +15,9 @@ namespace Query_mvc_Q5
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{page}",
+                defaults: new { controller = "Home", action = "Index", page = UrlParameter.Optional }
+                //,namespaces: new[] { "ASP_NET_MVC_Q5.Controllers" }
             );
         }
     }

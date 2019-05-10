@@ -1,7 +1,7 @@
-﻿@model Query_mvc_Q5.ViewModels.ProductListViewModel
+﻿@model ASP_NET_MVC_Q5.ViewModels.ProductListViewModel
 
 @{
-    ViewBag.Title = "Query_mvc_Q5";
+    ViewBag.Title = "ASP_NET_MVC_Q5";
 }
 
 @using X.PagedList.Mvc;
@@ -10,22 +10,22 @@
     <h1>Query</h1>
     <p class="lead">Þetta er breytt jumbotron sem hernema allt lárétt pláss foreldris síns.</p>
     <hr class="my-4">
-    <form action="@Url.Action("Index", "Home")" method="get">
+    <form action="@Url.Action("Index", "Home")" method="post">
         <div class="form-group">
-            <label for="slctLocale">Locale</label>
-            <select name="slctLocale" id="slctLocale" class="form-control"></select>
+            <label for="InputLocale">Locale</label>
+            <select name="InputLocale" id="InputLocale" class="form-control"></select>
         </div>
         <div class="form-group">
-            <label for="inputPrdtName">Product Name</label>
-            <input type="text" class="form-control" name="inputPrdtName" id="inputPrdtName" placeholder="ps4, apple, airpod....." value="@(ViewBag.inputPrdtName ?? String.Empty)">
+            <label for="InputProductName">Product Name</label>
+            <input type="text" class="form-control" name="InputProductName" id="InputProductName" placeholder="ps4, apple, airpod....." value="@Model.InputProductName">
         </div>
         <div class="form-group">
-            <label for="inputPriceHr">Price higher than</label>
-            <input type="text" class="form-control" name="inputPriceHr" id="inputPriceHr" placeholder="please set a number" value="@(ViewBag.inputPriceHr ?? String.Empty)">
+            <label for="InputPriceMax">Price higher than</label>
+            <input type="text" class="form-control" name="InputPriceMax" id="InputPriceMax" placeholder="please set a number" value="@Model.InputPriceMax">
         </div>
         <div class="form-group">
-            <label for="inputPriceLr">Price lower than</label>
-            <input type="text" class="form-control" name="inputPriceLr" id="inputPriceLr" placeholder="please set a number" value="@(ViewBag.inputPriceLr ?? String.Empty)">
+            <label for="InputPriceMin">Price lower than</label>
+            <input type="text" class="form-control" name="InputPriceMin" id="InputPriceMin" placeholder="please set a number" value="@Model.InputPriceMin">
         </div>
         <button type="submit" class="btn btn-primary">Query</button>
     </form>
@@ -66,7 +66,7 @@
 </table>
 
 @Html.PagedListPager((X.PagedList.IPagedList)Model.ProductList,
-    page => Url.Action("Index", new { page=page, slctLocale = ViewBag.slctLocale, inputPrdtName= ViewBag.inputPrdtName, inputPriceHr= ViewBag.inputPriceHr , inputPriceLr =ViewBag.inputPriceLr }),
+    page => Url.Action("Index", new { page=page, model=Model }),
     new PagedListRenderOptions
     {
         ContainerDivClasses = new[] { "" },
@@ -92,15 +92,32 @@
                 success: function (data) {
                     data = JSON.parse(data);
                     if (data.length > 0) {
-                        $('#slctLocale').empty();
-                        $('#slctLocale').append($('<option></option>').val('').text('please choose locale'));
+                        $('#InputLocale').empty();
+                        $('#InputLocale').append($('<option></option>').val('').text('please choose locale'));
                         $.each(data, function (i, item) {
-                            $('#slctLocale').append($('<option></option>').val(item.Name).text(item.FullName));
+                            $('#InputLocale').append($('<option></option>').val(item.Name).text(item.FullName));
                         });
-                        var slctLocal = '@ViewBag.slctLocale';
+                        var slctLocal = '@Model.InputLocale';
                         if (slctLocal != '') {
-                            $('#slctLocale').val(slctLocal);
+                            $('#InputLocale').val(slctLocal);
                         }
+                    }
+                }
+            });
+        }
+
+        function query() {
+            var queryUrl = '/Home/Query';
+            $.ajax({
+                url: queryUrl,
+                type: 'post',
+                cache: false,
+                async: false,
+                dataType: 'json',
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.length > 0) {
+                        // todo..
                     }
                 }
             });
