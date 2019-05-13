@@ -15,7 +15,26 @@ namespace ASP_NET_MVC_Q5.Controllers
     {
         private int pageSize = 5;
 
-        public ActionResult Index(int? page, ProductListViewModel model)
+        public ActionResult Index(int page = 1)
+        {
+            ProductListViewModel model = new ProductListViewModel();
+            List<ProductViewModel> productList = GetProductsFromJsonFile();
+
+            var _productList = from p in productList
+                               select p;
+
+            model.ProductList = _productList;
+
+            int pageIndex = page < 1 ? 1 : page;
+            model.PageIndex = pageIndex;
+
+            model.ProductList = model.ProductList.ToPagedList(pageIndex, pageSize);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Index(ProductListViewModel model)
         {
             List<ProductViewModel> productList = GetProductsFromJsonFile();
 
@@ -42,15 +61,11 @@ namespace ASP_NET_MVC_Q5.Controllers
             model.ProductList = _productList;
 
 
-            var pageNumber = page ?? 1;
-            model.ProductList = model.ProductList.ToPagedList(pageNumber, pageSize);
+            int pageIndex = model.PageIndex < 1 ? 1 : model.PageIndex;
+            model.PageIndex = model.PageIndex < 1 ? 1 : model.PageIndex;
 
-            return View(model);
-        }
+            model.ProductList = model.ProductList.ToPagedList(pageIndex, pageSize);
 
-        [HttpPost]
-        public ActionResult Query(ProductListViewModel model)
-        {
             return View(model);
         }
 

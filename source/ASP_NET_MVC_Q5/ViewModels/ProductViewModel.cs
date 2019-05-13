@@ -7,11 +7,12 @@ using System.Web;
 namespace ASP_NET_MVC_Q5.ViewModels
 {
     public class ProductListViewModel
-    {
+    {     
         public string InputLocale { get; set; }
         public string InputProductName { get; set; }
         public string InputPriceMax { get; set; }
         public string InputPriceMin { get; set; }
+        public int PageIndex { get; set; }
 
         public IEnumerable<ProductViewModel> ProductList { get; set; }
     }

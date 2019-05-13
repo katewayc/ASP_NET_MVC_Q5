@@ -1,16 +1,15 @@
-﻿@model ASP_NET_MVC_Q5.ViewModels.ProductListViewModel
+﻿@using X.PagedList.Mvc;
+@model ASP_NET_MVC_Q5.ViewModels.ProductListViewModel
 
 @{
     ViewBag.Title = "ASP_NET_MVC_Q5";
 }
 
-@using X.PagedList.Mvc;
-
 <div class="jumbotron">
     <h1>Query</h1>
     <p class="lead">Þetta er breytt jumbotron sem hernema allt lárétt pláss foreldris síns.</p>
     <hr class="my-4">
-    <form action="@Url.Action("Index", "Home")" method="post">
+    <form action="@Url.Action("Index", "Home")" method="post" id="ProductList">
         <div class="form-group">
             <label for="InputLocale">Locale</label>
             <select name="InputLocale" id="InputLocale" class="form-control"></select>
@@ -28,6 +27,7 @@
             <input type="text" class="form-control" name="InputPriceMin" id="InputPriceMin" placeholder="please set a number" value="@Model.InputPriceMin">
         </div>
         <button type="submit" class="btn btn-primary">Query</button>
+        <input type="hidden" id="PageIndex" name="PageIndex"  value="@Model.PageIndex"/>
     </form>
 </div>
 
@@ -66,7 +66,7 @@
 </table>
 
 @Html.PagedListPager((X.PagedList.IPagedList)Model.ProductList,
-    page => Url.Action("Index", new { page=page, model=Model }),
+    page => Url.Action("Index", new { page}),
     new PagedListRenderOptions
     {
         ContainerDivClasses = new[] { "" },
@@ -76,6 +76,21 @@
     })
 
 @section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('.pagination>li>a[href]').each(function (i, item) {
+                var page = $(item).attr('href').replace('/Home/Index/', '');
+                $(item).attr('href', '#').click(function () { postPage(page); });
+            });
+        });
+
+        function postPage(page) {
+            var targetFormId = '#ProductList';
+            $('#PageIndex').val(page);
+            $(targetFormId).submit();
+        };
+    </script>
+
     <script>
         $(document).ready(function () {
             getLocale();
@@ -101,23 +116,6 @@
                         if (slctLocal != '') {
                             $('#InputLocale').val(slctLocal);
                         }
-                    }
-                }
-            });
-        }
-
-        function query() {
-            var queryUrl = '/Home/Query';
-            $.ajax({
-                url: queryUrl,
-                type: 'post',
-                cache: false,
-                async: false,
-                dataType: 'json',
-                success: function (data) {
-                    data = JSON.parse(data);
-                    if (data.length > 0) {
-                        // todo..
                     }
                 }
             });
