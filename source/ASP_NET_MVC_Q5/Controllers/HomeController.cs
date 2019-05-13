@@ -18,12 +18,8 @@ namespace ASP_NET_MVC_Q5.Controllers
         public ActionResult Index(int page = 1)
         {
             ProductListViewModel model = new ProductListViewModel();
-            List<ProductViewModel> productList = GetProductsFromJsonFile();
-
-            var _productList = from p in productList
-                               select p;
-
-            model.ProductList = _productList;
+            IEnumerable<ProductViewModel> productList = ProductViewModel.Mapping(Product.ProductList);
+            model.ProductList = productList;
 
             int pageIndex = page < 1 ? 1 : page;
             model.PageIndex = pageIndex;
@@ -36,7 +32,7 @@ namespace ASP_NET_MVC_Q5.Controllers
         [HttpPost]
         public ActionResult Index(ProductListViewModel model)
         {
-            List<ProductViewModel> productList = GetProductsFromJsonFile();
+            IEnumerable<ProductViewModel> productList = ProductViewModel.Mapping(Product.ProductList);
 
             var _productList = from p in productList
                                select p;
@@ -77,22 +73,6 @@ namespace ASP_NET_MVC_Q5.Controllers
             json = JsonConvert.SerializeObject(locales);
 
             return Json(json, JsonRequestBehavior.AllowGet);
-        }
-
-        private List<ProductViewModel> GetProductsFromJsonFile()
-        {
-            List<ProductViewModel> productListViewModels = null;
-
-            string FileName = @"data.json";
-
-            using (StreamReader sr = new StreamReader(Server.MapPath(@"~/App_Data/" + FileName)))
-            {
-                string json = sr.ReadToEnd();
-                List<ProductViewModel> items = JsonConvert.DeserializeObject<List<ProductViewModel>>(json);
-                productListViewModels = items;
-            }
-
-            return productListViewModels;
         }
 
         public ActionResult Detail(int? Id)

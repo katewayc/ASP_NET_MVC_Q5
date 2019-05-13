@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASP_NET_MVC_Q5.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -36,5 +37,23 @@ namespace ASP_NET_MVC_Q5.ViewModels
 
         [Display(Name = "建立時間")]
         public string Create_Date { get; set; }
+
+        public static IEnumerable<ProductViewModel> Mapping(IEnumerable<Product> products)
+        {
+            var model = from p in products
+                        select new ProductViewModel()
+                        {
+                            Id = p.Id,
+                            Locale = p.Locale,
+                            Product_Name = p.Product_Name,
+                            Price = p.Price,
+                            Promote_Price = p.Promote_Price,
+                            Create_Date = p.Create_Date.ToString()
+                        };
+
+            IEnumerable<ProductViewModel> listViewModel = model;
+
+            return listViewModel;
+        }
     }
 }
