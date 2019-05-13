@@ -9,7 +9,7 @@ namespace ASP_NET_MVC_Q5.Models
 {
     public class Product
     {
-        private const string _dataSource = "@~/App_Data/data.json";
+        private const string _dataSource = @"~/App_Data/data.json";
 
         private static string _sourcePath = HttpContext.Current.Server.MapPath(_dataSource);
 
