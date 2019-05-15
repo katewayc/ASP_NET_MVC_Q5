@@ -43,7 +43,7 @@ namespace ASP_NET_MVC_Q5.Controllers
             }
             if (!string.IsNullOrEmpty(model.InputProductName))
             {
-                _productList = _productList.Where(p => p.Product_Name.ToLower().Contains(model.InputProductName.ToLower()));
+                _productList = _productList.Where(p => p.ProductName.ToLower().Contains(model.InputProductName.ToLower()));
             }
             if (!string.IsNullOrEmpty(model.InputPriceMax))
             {

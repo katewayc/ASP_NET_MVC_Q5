@@ -27,16 +27,16 @@ namespace ASP_NET_MVC_Q5.ViewModels
         public string Locale { get; set; }
 
         [Display(Name = "產品名稱")]
-        public string Product_Name { get; set; }
+        public string ProductName { get; set; }
 
         [Display(Name = "價格")]
         public decimal Price { get; set; }
 
         [Display(Name = "促銷價格")]
-        public string Promote_Price { get; set; }
+        public string PromotePrice { get; set; }
 
         [Display(Name = "建立時間")]
-        public string Create_Date { get; set; }
+        public string CreateDate { get; set; }
 
         public static IEnumerable<ProductViewModel> Mapping(IEnumerable<Product> products)
         {
@@ -45,10 +45,10 @@ namespace ASP_NET_MVC_Q5.ViewModels
                         {
                             Id = p.Id,
                             Locale = p.Locale,
-                            Product_Name = p.Product_Name,
+                            ProductName = p.Product_Name,
                             Price = p.Price,
-                            Promote_Price = p.Promote_Price,
-                            Create_Date = p.Create_Date.ToString()
+                            PromotePrice = p.Promote_Price,
+                            CreateDate = p.Create_Date.ToString()
                         };
 
             IEnumerable<ProductViewModel> listViewModel = model;

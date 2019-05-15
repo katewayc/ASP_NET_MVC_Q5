@@ -26,6 +26,7 @@ namespace ASP_NET_MVC_Q5.Models
         public DateTime Create_Date { get; set; }
 
         private static IEnumerable<Product> _productList;
+
         public static IEnumerable<Product> ProductList
         {
             get
